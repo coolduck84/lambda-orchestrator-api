@@ -30,10 +30,12 @@ public class InvokeAPI {
 			String orchestratorBaseURL, String certFilePath) {
 		System.out.println("Inside callOrchestratorAPI().....");
 
-		try {
-			createTrustStore(certFilePath);
-		} catch (Exception e) {
-			return ("Exception while creating truststore: " + e);
+		if (certFilePath != null) {
+			try {
+				createTrustStore(certFilePath);
+			} catch (Exception e) {
+				return ("Exception while creating truststore: " + e);
+			}
 		}
 
 		HttpHeaders headers = new HttpHeaders();
