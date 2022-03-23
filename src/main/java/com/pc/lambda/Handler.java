@@ -16,13 +16,8 @@ public class Handler implements RequestHandler<String, String> {
 		String scope = System.getenv("scope");
 		String grantType = System.getenv("grantType");
 		String orchestratorBaseURL = System.getenv("orchestratorBaseURL");
+		String certFilePath = System.getenv("certFilePath");
 
-		System.setProperty("https.proxyHost", System.getenv("https_proxyHost"));
-		System.setProperty("https.proxyPort", System.getenv("https_proxyPort"));
-
-		System.out.println("scope => " + scope);
-		System.out.println("grantType => " + grantType);
-		System.out.println("orchestratorBaseURL => " + orchestratorBaseURL);
 		if (clientId != null && clientId.length() > 5) {
 			System.out.println("clientId => " + clientId.substring(0, 4));
 		} else {
@@ -33,10 +28,20 @@ public class Handler implements RequestHandler<String, String> {
 		} else {
 			System.out.println("clientSecret not available");
 		}
+		System.out.println("scope => " + scope);
+		System.out.println("grantType => " + grantType);
+		System.out.println("orchestratorBaseURL => " + orchestratorBaseURL);
+		System.out.println("certFilePath => " + certFilePath);
+		
+		System.setProperty("https.proxyHost", System.getenv("https_proxyHost"));
+		System.setProperty("https.proxyPort", System.getenv("https_proxyPort"));
+		System.out.println("proxyHost => " + System.getProperty("https.proxyHost"));
+		System.out.println("proxyPort => " + System.getProperty("https.proxyPort"));
 
 		try {
 			InvokeAPI api = new InvokeAPI();
-			String releaseKey = api.callOrchestratorAPI(clientId, clientSecret, scope, grantType, orchestratorBaseURL);
+			String releaseKey = api.callOrchestratorAPI(clientId, clientSecret, scope, grantType, orchestratorBaseURL,
+					certFilePath);
 			return releaseKey;
 		} catch (Exception e) {
 			System.out.println("Exception while calling Orchestrator APIs: " + e.getMessage() + " \nStack Trace: "
@@ -46,5 +51,4 @@ public class Handler implements RequestHandler<String, String> {
 		System.out.println("Completed Lambda Handler !");
 		return "";
 	}
-
 }
