@@ -26,13 +26,10 @@ public class InvokeAPI {
 
 		String releaseKey = "";
 		String accessToken = getAccessToken(clientId, clientSecret, scope, grantType, orchestratorBaseURL, headers);
-		if (accessToken == null) {
-			return "Access token could not be retrieved !";
+		if (accessToken.startsWith("Exception")) {
+			return accessToken;
 		} else {
 			releaseKey = getReleaseKey(accessToken, orchestratorBaseURL, headers);
-			if (releaseKey == null) {
-				return "Release Key could not be retrieved !";
-			}
 		}
 
 		System.out.println("Completed callOrchestratorAPI() !");
@@ -51,6 +48,7 @@ public class InvokeAPI {
 					+ "&scope=" + scope + "";
 
 			URI uri = new URI(apiUrl);
+			System.out.println("URI: " + uri.toString());
 			HttpEntity<String> request = new HttpEntity<>(payload, headers);
 			
 			System.out.println("API Invocation started !");
@@ -64,10 +62,11 @@ public class InvokeAPI {
 
 			System.out.println("Response status getAccessToken(): " + response.getStatusCodeValue());
 		} catch (URISyntaxException uRISyntaxException) {
-			System.out.println("Exception occured while setting uri:" + uRISyntaxException);
-			System.out.println("Uri cannot be built" + uRISyntaxException.getReason());
+			accessToken = "Exception occured while setting uri:" + uRISyntaxException;
+			System.out.println(accessToken);
 		} catch (Exception exception) {
-			System.out.println("Exception occured while getting access token:" + exception);
+			accessToken = "Exception occured while getting access token:" + exception;
+			System.out.println(accessToken);
 		}
 
 		System.out.println("Completed getAccessToken() !");
@@ -87,6 +86,7 @@ public class InvokeAPI {
 			headers.add("Authorization", "Bearer " + accessToken);
 
 			URI uri = new URI(apiUrl);
+			System.out.println("URI: " + uri.toString());
 			HttpEntity<Void> request = new HttpEntity<>(headers);
 			
 			System.out.println("API Invocation started !");
@@ -107,10 +107,11 @@ public class InvokeAPI {
 
 			System.out.println("Response status getReleaseKey(): " + response.getStatusCodeValue());
 		} catch (URISyntaxException uRISyntaxException) {
-			System.out.println("Exception occured while setting uri:" + uRISyntaxException);
-			System.out.println("Uri cannot be built" + uRISyntaxException.getReason());
+			releaseKey = "Exception occured while setting uri:" + uRISyntaxException;
+			System.out.println(releaseKey);
 		} catch (Exception exception) {
-			System.out.println("Exception occured while getting release key:" + exception);
+			releaseKey = "Exception occured while getting release key:" + exception;
+			System.out.println(releaseKey);
 		}
 
 		System.out.println("Completed getReleaseKey() !");

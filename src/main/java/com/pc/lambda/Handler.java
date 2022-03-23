@@ -22,6 +22,9 @@ public class Handler implements RequestHandler<String, String> {
 		String grantType = System.getenv("grantType");
 		String orchestratorBaseURL = System.getenv("orchestratorBaseURL");
 		
+		System.setProperty("https.proxyHost", System.getenv("https_proxyHost"));
+		System.setProperty("https.proxyPort", System.getenv("https_proxyPort"));
+		
 		logger.log("\nscope => " + scope);
 		logger.log("\ngrantType => " + grantType);
 		logger.log("\norchestratorBaseURL => " + orchestratorBaseURL);
